@@ -5,6 +5,7 @@ use prettytable::*;
 use serde::*;
 
 type URI = String;
+type DateTime = String;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -65,17 +66,25 @@ fn main() -> Result<(), Error> {
 
     let mut table = prettytable::Table::new();
 
-    table.add_row(row!(b => "issue", "comments"));
+    table.add_row(row!(b => "issue", "opened_at", "closed_at"));
 
     for issue in &response_data
         .repository
         .expect("missing repository")
-        .issues
+        .pull_requests
         .nodes
         .expect("issue nodes is null")
     {
-        if let Some(issue) = issue {
-            table.add_row(row!(issue.title, issue.comments.total_count));
+        if let Some(pull_request) = issue {
+            let closed_at = match &pull_request.closed_at {
+                None => String::from(""),
+                Some(x) => x.to_string(),
+            };
+            table.add_row(row!(
+                pull_request.title,
+                pull_request.created_at.to_string(),
+                closed_at
+            ));
         }
     }
 

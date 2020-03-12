@@ -4,20 +4,11 @@ query RepoView($owner: String!, $name: String!) {
     stargazers {
       totalCount
     }
-    issues(first: 20, states: OPEN) {
+    pullRequests(first: 20, states: MERGED) {
       nodes {
         title
-        comments {
-          totalCount
-        }
-      }
-    }
-    pullRequests(first: 20, states: OPEN) {
-      nodes {
-        title
-        commits {
-          totalCount
-        }
+        createdAt
+        closedAt
       }
     }
   }
