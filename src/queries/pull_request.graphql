@@ -1,9 +1,5 @@
-query RepoView($owner: String!, $name: String!) {
+query PullRequestQuery($owner: String!, $name: String!) {
   repository(owner: $owner, name: $name) {
-    homepageUrl
-    stargazers {
-      totalCount
-    }
     pullRequests(first: 20, states: MERGED) {
       nodes {
         title
