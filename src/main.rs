@@ -21,14 +21,14 @@ fn main() -> Result<(), Error> {
 
     table.add_row(row!(b => "issue", "opened_at", "closed_at"));
 
-    for issue in &pull_requests
+    for pr in &pull_requests
         .repository
         .expect("missing repository")
         .pull_requests
         .nodes
         .expect("issue nodes is null")
     {
-        if let Some(pull_request) = issue {
+        if let Some(pull_request) = pr {
             let closed_at = match &pull_request.closed_at {
                 None => String::from(""),
                 Some(x) => x.to_string(),
