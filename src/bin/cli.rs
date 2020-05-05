@@ -14,7 +14,7 @@ fn main() -> Result<(), Error> {
 
     let config: Env = envy::from_env()?;
 
-    let pull_requests = github::pull_requests::get(config.github_api_token)?;
+    let pull_requests = github::pull_requests::get("fallion", "fallion", config.github_api_token)?;
 
     let mut table = prettytable::Table::new();
 

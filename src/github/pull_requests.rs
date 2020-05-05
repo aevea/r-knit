@@ -13,10 +13,14 @@ type URI = String;
 )]
 struct OldestPullRequestQuery;
 
-pub fn get(token: String) -> Result<oldest_pull_request_query::ResponseData, Error> {
+pub fn get(
+    owner: &str,
+    name: &str,
+    token: String,
+) -> Result<oldest_pull_request_query::ResponseData, Error> {
     let query = OldestPullRequestQuery::build_query(oldest_pull_request_query::Variables {
-        owner: "productboard".to_string(),
-        name: "pb-frontend".to_string(),
+        owner: owner.to_string(),
+        name: name.to_string(),
     });
 
     let client = reqwest::Client::new();
