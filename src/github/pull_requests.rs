@@ -3,6 +3,7 @@ use graphql_client::*;
 use log::*;
 
 type DateTime = String;
+type URI = String;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -14,8 +15,8 @@ struct PullRequestQuery;
 
 pub fn get(token: String) -> Result<pull_request_query::ResponseData, Error> {
     let query = PullRequestQuery::build_query(pull_request_query::Variables {
-        owner: "outillage".to_string(),
-        name: "commitsar".to_string(),
+        owner: "productboard".to_string(),
+        name: "pb-frontend".to_string(),
     });
 
     let client = reqwest::Client::new();
