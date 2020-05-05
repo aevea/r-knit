@@ -2,19 +2,19 @@ use failure::Error;
 use graphql_client::*;
 use log::*;
 
-type DateTime = String;
+type DateTime = chrono::DateTime<chrono::Utc>;
 type URI = String;
 
 #[derive(GraphQLQuery)]
 #[graphql(
     schema_path = "src/schema/schema.public.graphql",
-    query_path = "src/queries/pull_request.graphql",
+    query_path = "src/queries/oldest_pr.graphql",
     response_derives = "Debug"
 )]
-struct PullRequestQuery;
+struct OldestPullRequestQuery;
 
-pub fn get(token: String) -> Result<pull_request_query::ResponseData, Error> {
-    let query = PullRequestQuery::build_query(pull_request_query::Variables {
+pub fn get(token: String) -> Result<oldest_pull_request_query::ResponseData, Error> {
+    let query = OldestPullRequestQuery::build_query(oldest_pull_request_query::Variables {
         owner: "productboard".to_string(),
         name: "pb-frontend".to_string(),
     });
@@ -27,7 +27,7 @@ pub fn get(token: String) -> Result<pull_request_query::ResponseData, Error> {
         .json(&query)
         .send()?;
 
-    let response_body: Response<pull_request_query::ResponseData> = res.json()?;
+    let response_body: Response<oldest_pull_request_query::ResponseData> = res.json()?;
     info!("{:?}", response_body);
 
     if let Some(errors) = response_body.errors {
@@ -38,7 +38,7 @@ pub fn get(token: String) -> Result<pull_request_query::ResponseData, Error> {
         }
     }
 
-    let response_data: pull_request_query::ResponseData =
+    let response_data: oldest_pull_request_query::ResponseData =
         response_body.data.expect("missing response data");
 
     Ok(response_data)

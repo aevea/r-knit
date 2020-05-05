@@ -1,3 +1,4 @@
+use chrono_humanize::{Accuracy, HumanTime, Tense};
 use failure::Error;
 use prettytable::*;
 use serde::*;
@@ -17,7 +18,7 @@ fn main() -> Result<(), Error> {
 
     let mut table = prettytable::Table::new();
 
-    table.add_row(row!(b => "issue", "opened_at", "closed_at", "url"));
+    table.add_row(row!(b => "Oldest open Pull Request", "Open for", "URL"));
 
     for pr in &pull_requests
         .repository
@@ -27,14 +28,11 @@ fn main() -> Result<(), Error> {
         .expect("issue nodes is null")
     {
         if let Some(pull_request) = pr {
-            let closed_at = match &pull_request.closed_at {
-                None => String::from(""),
-                Some(x) => x.to_string(),
-            };
+            let open_for = chrono::Utc::now().signed_duration_since(pull_request.created_at);
+
             table.add_row(row!(
                 pull_request.title,
-                pull_request.created_at.to_string(),
-                closed_at,
+                HumanTime::from(open_for).to_text_en(Accuracy::Rough, Tense::Present),
                 pull_request.url
             ));
         }
