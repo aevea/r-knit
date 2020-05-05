@@ -13,7 +13,7 @@ type URI = String;
 )]
 struct OldestPullRequestQuery;
 
-pub fn get(
+pub fn oldest_pr(
     owner: &str,
     name: &str,
     token: String,
