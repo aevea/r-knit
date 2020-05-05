@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "prisma.vscode-graphql",
+        "matklad.rust-analyzer"
+    ]
+}
