@@ -1,0 +1,12 @@
+query MergedPullRequestQuery($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    pullRequests(last: 100, states: MERGED) {
+      nodes {
+        title
+        createdAt
+        mergedAt
+        url
+      }
+    }
+  }
+}
